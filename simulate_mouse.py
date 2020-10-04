@@ -25,14 +25,15 @@ sleep_range = (args.sleep_min, args.sleep_max)
 display_width, display_height = pyautogui.size()
 
 
-def exit_promt() -> str:
-    """Exit Promt to check if user wants to exit"""
+def exit_prompt() -> str:
+    """Exit prompt to check if user wants to exit"""
     print("Simulation has been interrupted!")
     resp = input('To exit Press "E" for continuing the simulation press "C" and confirm with Enter.')
     return resp.lower()
 
 
-def simulate_mouse(width=display_width, height=display_height, duration=duration_range, sleep=sleep_range):
+def simulate_mouse(width=display_width, height=display_height, duration=duration_range, sleep=sleep_range,
+                   one_move=False):
     """simulate mouse movement randomly across the screen"""
     while True:
         # adjust screen - 10% padding
@@ -40,10 +41,13 @@ def simulate_mouse(width=display_width, height=display_height, duration=duration
                          random.randint(height*0.1, height*0.9),
                          random.randint(duration[0], duration[1])/10)
         time.sleep(random.randint(sleep[0], sleep[1]))
+        if one_move:
+            break
 
 
-def simulate_keys_volume(sleep=sleep_range):
+def simulate_keys_volume(sleep=sleep_range, one_move=False):
     """simulate key presses"""
+
     while True:
 
         # increase volume and then decrease it to get original value
@@ -53,15 +57,18 @@ def simulate_keys_volume(sleep=sleep_range):
 
         # make random break until next volume changement
         time.sleep(random.randint(sleep[0], sleep[1]))
+        if one_move:
+            break
 
 
 def simulate_combined(width=display_width, height=display_height, duration=duration_range, sleep=sleep_range):
     """Simulates mouse and volume in combination - via. random choice"""
     while True:
-        if random.choice(["vol", "mouse"]) == "vol":
-            simulate_keys_volume(sleep)
-        elif random.choice["vol", "mouse"] == "mouse":
-            simulate_mouse(width, height, duration, sleep)
+        rand_choice = random.choice(["vol", "mouse"])
+        if rand_choice == "vol":
+            simulate_keys_volume(sleep, one_move=True)
+        elif rand_choice == "mouse":
+            simulate_mouse(width, height, duration, sleep, one_move=True)
 
 
 def simulate(argu=args):
@@ -72,10 +79,10 @@ def simulate(argu=args):
         elif argu.mode.lower() == "mouse":
             simulate_mouse()
         elif argu.mode.lower() == "comb":
-            simulate_mouse()
+            simulate_combined()
 
     except KeyboardInterrupt:
-        resp = exit_promt()
+        resp = exit_prompt()
         while (len(resp) != 1) & (resp not in ["e", "c"]):
             resp = exit()
 
