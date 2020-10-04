@@ -1,6 +1,14 @@
 import pyautogui
 import random
 import time
+import argparse
+
+# defines user input via. cli
+parser = argparse.ArgumentParser()
+parser.add_argument("--mode", type=str, default="vol", help="Define mode to run - you can choose between vol (volume), "
+                                                            "mouse (mouse movements) and comb (combined which is both"
+                                                            "mouse movement and volume simulation)")
+args = parser.parse_args()
 
 # defines the duration it should take to move mouse from a to b -> Gets choosen randomly between the min and max value
 duration_range = (1, 10)
@@ -35,6 +43,20 @@ def simulate_keys_volume(sleep=sleep_range):
         time.sleep(random.randint(sleep[0], sleep[1]))
 
 
+def simulate_combined(width=display_width, height=display_height, duration=duration_range, sleep=sleep_range):
+    """Simulates mouse and volume in combination - via. random choice"""
+    while True:
+        if random.choice(["vol", "mouse"]) == "vol":
+            simulate_keys_volume(sleep)
+        elif random.choice["vol", "mouse"] == "mouse":
+            simulate_mouse(width, display_width, height, duration, sleep)
+
+
 if __name__ == "__main__":
-    # simulate_mouse()
-    simulate_keys_volume()
+
+    if args.mode.lower() == "vol":
+        simulate_keys_volume()
+    elif args.mode.lower() == "mouse":
+        simulate_mouse()
+    elif args.mode.lower() == "comb":
+        simulate_mouse()
