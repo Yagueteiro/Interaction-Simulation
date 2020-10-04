@@ -8,13 +8,17 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--mode", type=str, default="vol", help="Define mode to run - you can choose between vol (volume), "
                                                             "mouse (mouse movements) and comb (combined which is both"
                                                             "mouse movement and volume simulation)")
+parser.add_argument("--duration_min", type=str, default=1, help="Min. duartion for the mouse to move from a to b")
+parser.add_argument("--duration_max", type=str, default=10, help="Max. duartion for the mouse to move from a to b")
+parser.add_argument("--sleep_min", type=str, default=5, help="Min. time to wait until next action")
+parser.add_argument("--sleep_max", type=str, default=5, help="Max. time to wait until next action")
 args = parser.parse_args()
 
 # defines the duration it should take to move mouse from a to b -> Gets choosen randomly between the min and max value
-duration_range = (1, 10)
+duration_range = (args.duration_min, args.duration_max)
 
 # defines the min/max duration the script should pause between mouse moves
-sleep_range = (5, 100)
+sleep_range = (args.sleep_min, args.sleep_max)
 
 # get screen dimensions
 display_width, display_height = pyautogui.size()
