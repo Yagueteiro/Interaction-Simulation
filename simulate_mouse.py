@@ -9,8 +9,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--mode", type=str, default="vol", help="Define mode to run - you can choose between vol (volume), "
                                                             "mouse (mouse movements) and comb (combined which is both"
                                                             "mouse movement and volume simulation)")
-parser.add_argument("--duration_min", type=str, default=1, help="Min. duartion for the mouse to move from a to b")
-parser.add_argument("--duration_max", type=str, default=10, help="Max. duartion for the mouse to move from a to b")
+parser.add_argument("--duration_min", type=str, default=1, help="Min. duration for the mouse to move from a to b")
+parser.add_argument("--duration_max", type=str, default=10, help="Max. duration for the mouse to move from a to b")
 parser.add_argument("--sleep_min", type=str, default=5, help="Min. time to wait until next action")
 parser.add_argument("--sleep_max", type=str, default=5, help="Max. time to wait until next action")
 args = parser.parse_args()
@@ -24,12 +24,12 @@ sleep_range = (args.sleep_min, args.sleep_max)
 # get screen dimensions
 display_width, display_height = pyautogui.size()
 
-def exit_promt()->str:
+
+def exit_promt() -> str:
     """Exit Promt to check if user wants to exit"""
     print("Simulation has been interrupted!")
     resp = input('To exit Press "E" for continuing the simulation press "C" and confirm with Enter.')
     return resp.lower()
-
 
 
 def simulate_mouse(width=display_width, height=display_height, duration=duration_range, sleep=sleep_range):
@@ -61,10 +61,11 @@ def simulate_combined(width=display_width, height=display_height, duration=durat
         if random.choice(["vol", "mouse"]) == "vol":
             simulate_keys_volume(sleep)
         elif random.choice["vol", "mouse"] == "mouse":
-            simulate_mouse(width, display_width, height, duration, sleep)
+            simulate_mouse(width, height, duration, sleep)
+
 
 def simulate(argu=args):
-    """Simulation Programm that runs the simulation based on the arguments"""
+    """Simulation program that runs the simulation based on the arguments"""
     try:
         if argu.mode.lower() == "vol":
             simulate_keys_volume()
@@ -75,7 +76,7 @@ def simulate(argu=args):
 
     except KeyboardInterrupt:
         resp = exit_promt()
-        while (len(resp)!= 1) & (resp not in ["e","c"]):
+        while (len(resp) != 1) & (resp not in ["e", "c"]):
             resp = exit()
 
         if resp == "e":
@@ -86,4 +87,3 @@ def simulate(argu=args):
 
 if __name__ == "__main__":
     simulate()
-
