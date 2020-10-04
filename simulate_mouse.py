@@ -2,6 +2,7 @@ import pyautogui
 import random
 import time
 import argparse
+import sys
 
 # defines user input via. cli
 parser = argparse.ArgumentParser()
@@ -22,6 +23,13 @@ sleep_range = (args.sleep_min, args.sleep_max)
 
 # get screen dimensions
 display_width, display_height = pyautogui.size()
+
+def exit_promt()->str:
+    """Exit Promt to check if user wants to exit"""
+    print("Simulation has been interrupted!")
+    resp = input('To exit Press "E" for continuing the simulation press "C" and confirm with Enter.')
+    return resp.lower()
+
 
 
 def simulate_mouse(width=display_width, height=display_height, duration=duration_range, sleep=sleep_range):
@@ -55,12 +63,27 @@ def simulate_combined(width=display_width, height=display_height, duration=durat
         elif random.choice["vol", "mouse"] == "mouse":
             simulate_mouse(width, display_width, height, duration, sleep)
 
+def simulate(argu=args):
+    """Simulation Programm that runs the simulation based on the arguments"""
+    try:
+        if argu.mode.lower() == "vol":
+            simulate_keys_volume()
+        elif argu.mode.lower() == "mouse":
+            simulate_mouse()
+        elif argu.mode.lower() == "comb":
+            simulate_mouse()
+
+    except KeyboardInterrupt:
+        resp = exit_promt()
+        while (len(resp)!= 1) & (resp not in ["e","c"]):
+            resp = exit()
+
+        if resp == "e":
+            sys.exit()
+        elif resp == "c":
+            simulate()
+
 
 if __name__ == "__main__":
+    simulate()
 
-    if args.mode.lower() == "vol":
-        simulate_keys_volume()
-    elif args.mode.lower() == "mouse":
-        simulate_mouse()
-    elif args.mode.lower() == "comb":
-        simulate_mouse()
